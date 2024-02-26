@@ -26,7 +26,7 @@ func reduce(inter:(felt,felt)*, start_index:felt, end_index:felt, res:felt)-> (f
     if (start_index==end_index){
         return (inter[start_index][0],res);
     } 
-    let val=inter[start_index][1];
+    val: felt =inter[start_index][1];
     res= res + val;
     return reduce(inter, start_index+1, end_index, res);
 

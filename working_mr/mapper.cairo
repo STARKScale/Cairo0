@@ -1,31 +1,28 @@
+%builtins output 
 from starkware.cairo.common.alloc import alloc
+from starkware.cairo.common.serialize import serialize_word
 
 
+struct InterValue{
+    row: felt,
+    value: felt,
+}
 
-// func create_vector()-> (vector: felt*){
-//     let (vector: felt*) = alloc();
-//     assert vector[0]=1;
-//     assert vector[1]=2;
-//     assert vector[2]=3;
-    
-//     return vector;
-// }
-
-
-// func create_matrix()-> (matrix: felt**){
-//     let (matrix: felt**) = alloc();
-    
-    
-//     return matrix;
-// }
-
-func main(){
+func main(output_ptr:felt*)-> (output_ptr:felt*) {
+    alloc_locals;
+    local res: InterValue*;
     //need to replace this with built in
     let (vector: felt*) = alloc();
     assert vector[0]=1;
     assert vector[1]=2;
     assert vector[2]=3;
     let (matrix: felt**) = alloc();
+    let (row1: felt*)= alloc();
+    let (row2: felt*)= alloc();
+    let (row3: felt*)= alloc();
+    assert matrix[0]=row1;
+    assert matrix[1]=row2;
+    assert matrix[2]=row3;
     assert matrix[0][0]=1;
     assert matrix[0][1]=2;
     assert matrix[0][2]=3;
@@ -37,13 +34,17 @@ func main(){
     assert matrix[2][2]=9;
     let row_size=3;
     let col_size=3;
-    let (res: (felt,felt)*)= alloc();
+    // let (res: (row,value)*)= alloc();
+  
+    let (res: InterValue*)= alloc();
     let res_index=0;
     mat_vect(vector,matrix,0,0,res,row_size,col_size, res_index);
-    return();
+    let first=res[0].value;
+    // serialize_word(first);
+    ret;
 }
 
-func mat_vect(vector:felt*, matrix: felt**, row: felt, col: felt, result: (felt,felt)*, row_size: felt, col_size:felt, res_index:felt)-> (felt,felt)*{
+func mat_vect(vector:felt*, matrix: felt**, row: felt, col: felt, result: InterValue*, row_size: felt, col_size:felt, res_index:felt)-> InterValue*{
     if (row == row_size) {
         return result;
     }
@@ -52,10 +53,10 @@ func mat_vect(vector:felt*, matrix: felt**, row: felt, col: felt, result: (felt,
         let vec_val= vector[col];
         //result.append((row,mat_val*vec_val))
         let value= mat_val*vec_val;
-        result[res_index]=(row,value);
+        assert result[res_index]= InterValue(row,value);
         mat_vect(vector,matrix,row,col+1,result,row_size, col_size, res_index+1);
     } else{
-        mat_vect(vector,matrix,row+1, 0,result,row_size, col_size, res_index+1);
+        mat_vect(vector,matrix,row+1, 0,result,row_size, col_size, res_index);
     }
     return result;
 }
