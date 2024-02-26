@@ -1,4 +1,4 @@
-%builtins output 
+// %builtins output 
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.serialize import serialize_word
 
@@ -8,9 +8,9 @@ struct InterValue{
     value: felt,
 }
 
-func main(output_ptr:felt*)-> (output_ptr:felt*) {
-    alloc_locals;
-    local res: InterValue*;
+func main()-> () {
+    // alloc_locals;
+    // local res: InterValue*;
     //need to replace this with built in
     let (vector: felt*) = alloc();
     assert vector[0]=1;
@@ -39,7 +39,6 @@ func main(output_ptr:felt*)-> (output_ptr:felt*) {
     let (res: InterValue*)= alloc();
     let res_index=0;
     mat_vect(vector,matrix,0,0,res,row_size,col_size, res_index);
-    let first=res[0].value;
     // serialize_word(first);
     ret;
 }

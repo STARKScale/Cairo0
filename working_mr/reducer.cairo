@@ -1,6 +1,8 @@
 from starkware.cairo.common.alloc import alloc
 
-func main(jobid: felt){
+func main(){
+    alloc_locals;
+    let  jobid :felt =1;
     let ( inter: (felt,felt)*) = alloc();
     assert inter[0]=(0,1);
     assert inter[1]=(0,4);
@@ -26,8 +28,8 @@ func reduce(inter:(felt,felt)*, start_index:felt, end_index:felt, res:felt)-> (f
     if (start_index==end_index){
         return (inter[start_index][0],res);
     } 
-    val: felt =inter[start_index][1];
-    res= res + val;
-    return reduce(inter, start_index+1, end_index, res);
+    let val =inter[start_index][1];
+    // res= res + val;
+    return reduce(inter=inter, start_index=start_index+1, end_index=end_index, res=res+val);
 
 }
